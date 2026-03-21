@@ -243,7 +243,8 @@ function save() {
   var url = GAS_URL +
     '?action=saveChoices' +
     '&username=' + encodeURIComponent(username) +
-    '&choices='  + encodeURIComponent(JSON.stringify(choices));
+    '&choices='  + encodeURIComponent(JSON.stringify(choices)) +
+    '&initData=' + encodeURIComponent(initData);
 
   fetch(url)
     .then(function(r) { return r.json(); })
