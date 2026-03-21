@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CWL Registration</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: rgba(255,255,255,0.08);
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #f0a500;
+    --accent-dim: rgba(240,165,0,0.12);
+    --danger: #f85149;
+    --success: #3fb950;
+    --radius: 12px;
+    --radius-sm: 8px;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 80px; }
+
+  .header {
+    background: linear-gradient(135deg, #1a1000 0%, #0d1117 60%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 16px 16px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .header-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--accent); }
+  .header .subtitle { font-size: 13px; color: var(--muted); padding-left: 32px; }
+  .user-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent-dim); border: 1px solid rgba(240,165,0,0.25);
+    border-radius: 20px; padding: 3px 10px 3px 4px; margin-top: 12px;
+  }
+  .user-avatar {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #000; flex-shrink: 0;
+  }
+  .user-pill span { font-size: 12px; color: var(--accent); font-weight: 500; }
+
+  .state-screen {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 60vh; gap: 12px; text-align: center; padding: 24px;
+  }
+  .state-icon { font-size: 40px; }
+  .state-title { font-size: 16px; font-weight: 600; }
+  .state-desc { font-size: 13px; color: var(--muted); max-width: 280px; line-height: 1.5; }
+  .spinner {
+    width: 32px; height: 32px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .section { padding: 16px 16px 0; }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+  }
+  .clan-group {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; margin-bottom: 12px;
+  }
+  .clan-header {
+    display: flex; align-items: center; gap: 8px; padding: 12px 14px;
+    border-bottom: 1px solid var(--border); background: var(--surface2);
+  }
+  .clan-name { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+  .clan-tag { font-size: 11px; color: var(--muted); font-family: monospace; }
+  .account-card { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  .account-card:last-child { border-bottom: none; }
+  .account-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .th-badge {
+    width: 36px; height: 36px; border-radius: 8px; background: var(--surface2);
+    border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: var(--accent); flex-direction: column; line-height: 1.1; flex-shrink: 0;
+  }
+  .th-badge .th-num { font-size: 15px; }
+  .account-info { flex: 1; min-width: 0; }
+  .account-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .account-tag { font-size: 11px; color: var(--muted); font-family: monospace; margin-top: 1px; }
+  .options-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .option-pill {
+    padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    border: 1.5px solid var(--border); background: transparent; color: var(--muted);
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .option-pill:active { transform: scale(0.95); }
+  .option-pill.selected { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+  .option-pill.opt-no.selected { border-color: var(--danger); background: rgba(248,81,73,0.12); color: var(--danger); }
+  .option-pill.opt-farming.selected { border-color: #3fb950; background: rgba(63,185,80,0.12); color: #3fb950; }
+
+  .save-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 16px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    background: linear-gradient(transparent, var(--bg) 30%);
+  }
+  .save-btn {
+    width: 100%; padding: 14px; border-radius: var(--radius); border: none;
+    background: var(--accent); color: #000; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: opacity 0.15s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .save-btn:active { transform: scale(0.98); opacity: 0.9; }
+  .save-btn:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; }
+
+  .toast {
+    position: fixed; top: 20px; left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 16px;
+    font-size: 13px; font-weight: 500; white-space: nowrap;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 100; pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { border-color: rgba(63,185,80,0.4); color: #3fb950; }
+  .toast.error { border-color: rgba(248,81,73,0.4); color: var(--danger); }
+  .empty-clan { padding: 16px 14px; font-size: 13px; color: var(--muted); font-style: italic; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<script>
+// ── IMPORTANT: replace this with your GAS Web App deployment URL ─────────────
+var GAS_URL = 'https://script.google.com/macros/s/AKfycbyrBz1SWGxoBl2YrNPoHqPtz9PpWsgfKMtY1mMnULHclXmobnoJlS_WixC08Gv47tZM/exec';
+// e.g. 'https://script.google.com/macros/s/AKfy.../exec'
+// ─────────────────────────────────────────────────────────────────────────────
+
+var tg = window.Telegram && window.Telegram.WebApp;
+if (tg) { tg.ready(); tg.expand(); tg.enableClosingConfirmation(); }
+
+var userData = null;
+var choices  = {};
+
+var OPT_META = {
+  'no':      { cls: 'opt-no',      label: 'No' },
+  'farming': { cls: 'opt-farming', label: 'Farming' },
+  'cwl':     { cls: '',            label: 'CWL' },
+  'lazy':    { cls: '',            label: 'Lazy CWL' },
+  'war':     { cls: '',            label: 'War CWL' },
+  'cwl_fwa': { cls: '',            label: 'CWL+FWA' },
+};
+
+function show(html) { document.getElementById('app').innerHTML = html; }
+function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escA(s) { return String(s||'').replace(/'/g,"\\'"); }
+function initials(n) { return (n||'?').split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2); }
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast '+(type||'success');
+  setTimeout(function(){ t.classList.add('show'); }, 10);
+  setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+
+function renderLoading() {
+  show('<div class="state-screen"><div class="spinner"></div><div class="state-title">Loading your accounts...</div></div>');
+}
+
+function renderError(msg, detail) {
+  show('<div class="state-screen">' +
+    '<div class="state-icon">⚠️</div>' +
+    '<div class="state-title">Something went wrong</div>' +
+    '<div class="state-desc">' + escH(msg) + (detail ? '<br><br><small style="opacity:0.6">' + escH(detail) + '</small>' : '') + '</div>' +
+    '</div>');
+}
+
+function buildUI() {
+  var username = userData.username;
+  var clans    = userData.clans || [];
+
+  if (clans.length === 0) {
+    show('<div class="header"><div class="header-top"><span style="font-size:22px">⚔️</span><h1>CWL Registration</h1></div>' +
+      '<div class="user-pill"><div class="user-avatar">' + initials(username) + '</div><span>@' + escH(username) + '</span></div></div>' +
+      '<div class="state-screen"><div class="state-icon">👤</div><div class="state-title">No accounts found</div>' +
+      '<div class="state-desc">You have no registered accounts. Ask a clan admin to use /register.</div></div>');
+    return;
+  }
+
+  var html = '<div class="header">' +
+    '<div class="header-top"><span style="font-size:22px">⚔️</span><h1>CWL Registration</h1></div>' +
+    '<div class="subtitle">Choose your role for each account</div>' +
+    '<div class="user-pill"><div class="user-avatar">' + initials(username) + '</div><span>@' + escH(username) + '</span></div>' +
+    '</div><div class="section"><div class="section-label">Your Accounts</div>';
+
+  clans.forEach(function(clan) {
+    html += '<div class="clan-group"><div class="clan-header">' +
+      '<span>' + (clan.emoji||'🛡️') + '</span>' +
+      '<span class="clan-name">' + escH(clan.clanName) + '</span>' +
+      '<span class="clan-tag">' + escH(clan.clanTag) + '</span></div>';
+
+    if (!clan.players || clan.players.length === 0) {
+      html += '<div class="empty-clan">No accounts in this clan</div>';
+    } else {
+      clan.players.forEach(function(p) {
+        var cur = choices[p.tag] || 'no';
+        var pills = '';
+        clan.options.forEach(function(opt) {
+          var m = OPT_META[opt] || { cls:'', label: opt };
+          pills += '<button class="option-pill ' + m.cls + (cur===opt?' selected':'') + '" ' +
+            'onclick="pick(\'' + escA(p.tag) + '\',\'' + escA(opt) + '\',this)">' + m.label + '</button>';
+        });
+        html += '<div class="account-card">' +
+          '<div class="account-top">' +
+          '<div class="th-badge"><span style="font-size:9px;opacity:0.6">TH</span><span class="th-num">' + (p.thLevel||'?') + '</span></div>' +
+          '<div class="account-info"><div class="account-name">' + escH(p.playerName) + '</div>' +
+          '<div class="account-tag">' + escH(p.tag) + '</div></div></div>' +
+          '<div class="options-row" id="opts-' + escA(p.tag) + '">' + pills + '</div></div>';
+      });
+    }
+    html += '</div>';
+  });
+
+  html += '</div><div class="save-bar"><button class="save-btn" id="saveBtn" onclick="save()">Save CWL Choices</button></div>';
+  show(html);
+}
+
+function pick(tag, opt, btn) {
+  choices[tag] = opt;
+  var row = document.getElementById('opts-' + tag);
+  if (row) row.querySelectorAll('.option-pill').forEach(function(p){ p.classList.remove('selected'); });
+  btn.classList.add('selected');
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+}
+
+function save() {
+  var btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+
+  fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'saveChoices', initData: tg ? tg.initData : '', initDataUnsafe: tg ? tg.initDataUnsafe : {}, choices: choices })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(res) {
+    if (res.ok) {
+      showToast('Choices saved!', 'success');
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      setTimeout(function(){ if(tg) tg.close(); }, 1500);
+    } else { showToast(res.error || 'Save failed', 'error'); }
+  })
+  .catch(function(){ showToast('Network error', 'error'); })
+  .finally(function(){ btn.disabled=false; btn.textContent='Save CWL Choices'; });
+}
+
+function init() {
+  renderLoading();
+
+  if (!tg) { renderError('Open this app from the Telegram bot.'); return; }
+
+  var initData       = tg.initData || '';
+  var initDataUnsafe = tg.initDataUnsafe || {};
+  var user           = initDataUnsafe.user;
+
+  // If Telegram gives us the user directly (initDataUnsafe), we can render immediately
+  // without a round-trip for the identity check — the GAS backend still validates.
+  if (!initData && !user) {
+    renderError('Could not get your Telegram identity.', 'initData: empty, initDataUnsafe.user: null');
+    return;
+  }
+
+  fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'getAccounts', initData: initData, initDataUnsafe: initDataUnsafe })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(res) {
+    if (!res.ok) { renderError(res.error || 'Could not load accounts.'); return; }
+    userData = res.data;
+    res.data.players && res.data.players.forEach(function(p){ choices[p.tag] = p.savedChoice || 'no'; });
+    buildUI();
+  })
+  .catch(function(e){ renderError('Network error', e.message); });
+}
+
+init();
+</script>
+</body>
+</html>
