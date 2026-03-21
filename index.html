@@ -121,8 +121,8 @@ var GAS_URL = 'https://script.google.com/macros/s/AKfycbyrBz1SWGxoBl2YrNPoHqPtz9
 var tg = window.Telegram && window.Telegram.WebApp;
 if (tg) { tg.ready(); tg.expand(); }
 
-var username = tg && tg.initDataUnsafe && tg.initDataUnsafe.user
-  ? tg.initDataUnsafe.user.username : null;
+var username = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : null;
+var initData = tg ? (tg.initData || '') : '';
 
 var choices  = {};
 var isClosed = false; // set from API response
@@ -274,7 +274,7 @@ if (!username) {
   setRoot('<div class="state"><div class="state-icon">⚠️</div>' +
     '<div class="state-title">Not opened from Telegram</div></div>');
 } else {
-  fetch(GAS_URL + '?action=getAccounts&username=' + encodeURIComponent(username))
+  fetch(GAS_URL + '?action=getAccounts&username=' + encodeURIComponent(username) + '&initData=' + encodeURIComponent(initData))
     .then(function(r) { return r.json(); })
     .then(function(res) {
       if (!res.ok) {
