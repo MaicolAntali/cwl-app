@@ -186,22 +186,23 @@ function save() {
   var btn = document.getElementById('saveBtn');
   btn.disabled = true; btn.textContent = 'Saving...';
 
-  fetch(GAS_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'saveChoices', username: username, choices: choices })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(res) {
-    if (res.ok) {
-      toast('Saved!', 'ok');
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-    } else {
-      toast(res.error || 'Save failed', 'err');
-    }
-  })
-  .catch(function() { toast('Network error', 'err'); })
-  .finally(function() { btn.disabled = false; btn.textContent = 'Save choices'; });
+  var url = GAS_URL +
+    '?action=saveChoices' +
+    '&username=' + encodeURIComponent(username) +
+    '&choices='  + encodeURIComponent(JSON.stringify(choices));
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (res.ok) {
+        toast('Saved!', 'ok');
+        if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      } else {
+        toast(res.error || 'Save failed', 'err');
+      }
+    })
+    .catch(function(e) { toast('Network error: ' + e.message, 'err'); })
+    .finally(function() { btn.disabled = false; btn.textContent = 'Save choices'; });
 }
 
 // ── Boot ───────────────────────────────────────────────────────────────────
