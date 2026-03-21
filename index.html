@@ -363,6 +363,22 @@
       color: var(--danger);
       border-color: rgba(248, 81, 73, 0.4);
     }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 0 2px;
+      line-height: 1;
+      opacity: 0.8;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .lang-btn:active {
+      opacity: 0.5;
+    }
   </style>
 </head>
 
@@ -377,11 +393,60 @@
     var tg = window.Telegram && window.Telegram.WebApp;
     if (tg) { tg.ready(); tg.expand(); }
 
-    var username = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : null;
+    // username is only used for display — the API authenticates via initData
+    var username = tg && tg.initDataUnsafe && tg.initDataUnsafe.user
+      ? tg.initDataUnsafe.user.username : null;
     var initData = tg ? (tg.initData || '') : '';
 
     var choices = {};
     var isClosed = false; // set from API response
+
+    // ── i18n ──────────────────────────────────────────────────────────────────
+    // Default: Italian. Falls back to English for any non-IT language code.
+    var lang = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user &&
+      tg.initDataUnsafe.user.language_code === 'en') ? 'en' : 'it';
+
+    var STRINGS = {
+      it: {
+        title: '⚔️ Registrazione CWL',
+        your_accounts: 'I tuoi account',
+        no_accounts: 'Nessun account trovato',
+        no_accounts_desc: 'Chiedi a un admin di registrarti con /register.',
+        save_btn: 'Salva le scelte',
+        saving: 'Salvataggio...',
+        saved: 'Salvato!',
+        save_failed: 'Salvataggio fallito',
+        network_error: 'Errore di rete',
+        not_telegram: 'Apri questa app da Telegram',
+        closed_banner: 'Registrazioni chiuse — scadenza:',
+        deadline_notice: '⏰ Le registrazioni chiudono il',
+        loading: 'Caricamento...',
+      },
+      en: {
+        title: '⚔️ CWL Registration',
+        your_accounts: 'Your Accounts',
+        no_accounts: 'No accounts found',
+        no_accounts_desc: 'Ask an admin to register you with /register.',
+        save_btn: 'Save choices',
+        saving: 'Saving...',
+        saved: 'Saved!',
+        save_failed: 'Save failed',
+        network_error: 'Network error',
+        not_telegram: 'Open this app from Telegram',
+        closed_banner: 'Registration closed — deadline was',
+        deadline_notice: '⏰ Registration closes on',
+        loading: 'Loading...',
+      }
+    };
+
+    function T(key) { return STRINGS[lang][key] || STRINGS['en'][key] || key; }
+
+    function toggleLang() {
+      lang = lang === 'it' ? 'en' : 'it';
+      // Re-render with current data — lastRes is stored on load
+      if (window._lastRes) render(window._lastRes);
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
 
     var DEFAULT_OPTIONS = [
       { key: 'no', label: 'No' },
@@ -418,31 +483,34 @@
       var clans = res.clans;
       var deadline = res.deadline;
 
+      var flagEmoji = lang === 'it' ? '🇮🇹' : '🇬🇧';
+
       var headerHtml =
         '<div class="header">' +
-        '<h1>⚔️ CWL Registration</h1>' +
+        '<h1>' + T('title') + '</h1>' +
         '<span class="user-badge">@' + esc(username) + '</span>' +
+        '<button class="lang-btn" onclick="toggleLang()" title="Switch language">' + flagEmoji + '</button>' +
         '</div>';
 
       // Closed banner (sticky, below header)
       var bannerHtml = isClosed
-        ? '<div class="closed-banner">🔒 <span><strong>Registration closed</strong> — deadline was ' + esc(deadline) + '</span></div>'
+        ? '<div class="closed-banner">🔒 <span><strong>' + T('closed_banner') + '</strong> ' + esc(deadline) + '</span></div>'
         : '';
 
       if (!clans || clans.length === 0) {
         setRoot(headerHtml + bannerHtml +
           '<div class="state"><div class="state-icon">👤</div>' +
-          '<div class="state-title">No accounts found</div>' +
-          '<div class="state-desc">Ask an admin to register you with /register.</div></div>');
+          '<div class="state-title">' + T('no_accounts') + '</div>' +
+          '<div class="state-desc">' + T('no_accounts_desc') + '</div></div>');
         return;
       }
 
       // Deadline notice when still open
       var noticeHtml = !isClosed
-        ? '<div class="deadline-notice">⏰ Registration closes on ' + esc(deadline) + '</div>'
+        ? '<div class="deadline-notice">' + T('deadline_notice') + ' ' + esc(deadline) + '</div>'
         : '';
 
-      var body = noticeHtml + '<div class="section"><div class="section-label">Your Accounts</div>';
+      var body = noticeHtml + '<div class="section"><div class="section-label">' + T('your_accounts') + '</div>';
 
       clans.forEach(function (clan) {
         body += '<div class="clan-block">' +
@@ -484,7 +552,7 @@
       // Save button: hidden when closed
       var saveBar = isClosed
         ? ''
-        : '<div class="save-bar"><button class="save-btn" id="saveBtn" onclick="save()">Save choices</button></div>';
+        : '<div class="save-bar"><button class="save-btn" id="saveBtn" onclick="save()">' + T('save_btn') + '</button></div>';
 
       setRoot(headerHtml + bannerHtml + body + saveBar);
     }
@@ -494,7 +562,7 @@
       if (isClosed) return;
 
       var btn = document.getElementById('saveBtn');
-      btn.disabled = true; btn.textContent = 'Saving...';
+      btn.disabled = true; btn.textContent = T('saving');
 
       var url = GAS_URL +
         '?action=saveChoices' +
@@ -505,11 +573,11 @@
         .then(function (r) { return r.json(); })
         .then(function (res) {
           if (res.ok) {
-            toast('Saved!', 'ok');
+            toast(T('saved'), 'ok');
             if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
           } else {
             // Server rejected (e.g. deadline passed between page load and save)
-            toast(res.error || 'Save failed', 'err');
+            toast(res.error || T('save_failed'), 'err');
             if (res.error && res.error.indexOf('closed') > -1) {
               isClosed = true;
               // Reload the page so it switches to read-only state cleanly
@@ -517,18 +585,18 @@
             }
           }
         })
-        .catch(function (e) { toast('Network error: ' + e.message, 'err'); })
+        .catch(function (e) { toast(T('network_error') + ': ' + e.message, 'err'); })
         .finally(function () {
-          if (btn) { btn.disabled = false; btn.textContent = 'Save choices'; }
+          if (btn) { btn.disabled = false; btn.textContent = T('save_btn'); }
         });
     }
 
     // ── Boot ───────────────────────────────────────────────────────────────────
-    setRoot('<div class="state"><div class="spinner"></div></div>');
+    setRoot('<div class="state"><div class="spinner"></div><div class="state-desc" style="margin-top:12px">' + T('loading') + '</div></div>');
 
     if (!initData) {
       setRoot('<div class="state"><div class="state-icon">⚠️</div>' +
-        '<div class="state-title">Not opened from Telegram</div></div>');
+        '<div class="state-title">' + T('not_telegram') + '</div></div>');
     } else {
       fetch(GAS_URL + '?action=getAccounts&initData=' + encodeURIComponent(initData))
         .then(function (r) { return r.json(); })
@@ -538,11 +606,12 @@
               '<div class="state-title">' + esc(res.error) + '</div></div>');
             return;
           }
+          window._lastRes = res;
           render(res);
         })
         .catch(function (e) {
           setRoot('<div class="state"><div class="state-icon">⚠️</div>' +
-            '<div class="state-title">Network error</div>' +
+            '<div class="state-title">' + T('network_error') + '</div>' +
             '<div class="state-desc">' + esc(e.message) + '</div></div>');
         });
     }
