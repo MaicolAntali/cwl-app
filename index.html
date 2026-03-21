@@ -22,16 +22,34 @@
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding-bottom: 90px; }
 
   .header {
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-    padding: 16px;
-    position: sticky; top: 0; z-index: 10;
+    background: var(--surface2); border-bottom: 1px solid var(--border);
+    padding: 16px; position: sticky; top: 0; z-index: 10;
     display: flex; align-items: center; gap: 10px;
   }
   .header h1 { font-size: 17px; font-weight: 700; color: var(--accent); flex: 1; }
   .user-badge {
     font-size: 12px; color: var(--accent); background: var(--accent-dim);
     border: 1px solid rgba(240,165,0,0.3); border-radius: 20px; padding: 3px 10px;
+  }
+
+  /* ── Closed banner ── */
+  .closed-banner {
+    background: rgba(248,81,73,0.1);
+    border-bottom: 1px solid rgba(248,81,73,0.25);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--danger);
+    position: sticky; top: 57px; z-index: 9;
+  }
+  .closed-banner strong { font-weight: 600; }
+
+  /* ── Open deadline notice ── */
+  .deadline-notice {
+    margin: 14px 14px 0;
+    background: rgba(240,165,0,0.08);
+    border: 1px solid rgba(240,165,0,0.2);
+    border-radius: 8px; padding: 8px 12px;
+    font-size: 12px; color: var(--accent);
   }
 
   .section { padding: 14px 14px 0; }
@@ -45,40 +63,51 @@
   .account-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
   .th { width: 38px; height: 38px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
   .th span:first-child { font-size: 9px; color: var(--muted); line-height: 1; }
-  .th span:last-child { font-size: 16px; font-weight: 700; color: var(--accent); line-height: 1; }
+  .th span:last-child  { font-size: 16px; font-weight: 700; color: var(--accent); line-height: 1; }
   .account-name { font-size: 14px; font-weight: 600; }
-  .account-tag { font-size: 11px; color: var(--muted); font-family: monospace; margin-top: 2px; }
+  .account-tag  { font-size: 11px; color: var(--muted); font-family: monospace; margin-top: 2px; }
 
   .pills { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* interactive */
   .pill {
     padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
     border: 1.5px solid var(--border); background: transparent; color: var(--muted);
     cursor: pointer; transition: all 0.12s; -webkit-tap-highlight-color: transparent;
   }
   .pill:active { transform: scale(0.94); }
-  .pill.sel-no          { border-color: var(--danger); background: rgba(248,81,73,0.12); color: var(--danger); }
-  .pill.sel-cwl_in_clan { border-color: #48BFE3; background: rgba(72,191,227,0.12); color: #48BFE3; }
-  .pill.sel-farming     { border-color: var(--green);  background: rgba(63,185,80,0.12); color: var(--green); }
-  .pill.sel-cwl         { border-color: var(--accent); background: var(--accent-dim);    color: var(--accent); }
-  .pill.sel-lazy        { border-color: var(--accent); background: var(--accent-dim);    color: var(--accent); }
-  .pill.sel-war         { border-color: var(--accent); background: var(--accent-dim);    color: var(--accent); }
-  .pill.sel-cwl_fwa     { border-color: var(--accent); background: var(--accent-dim);    color: var(--accent); }
+
+  /* read-only */
+  .pill-ro {
+    padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    border: 1.5px solid var(--border); background: transparent; color: var(--muted);
+    cursor: default; opacity: 0.55;
+  }
+
+  /* selected states — shared by both pill and pill-ro via these classes */
+  .sel-no          { border-color: var(--danger) !important; background: rgba(248,81,73,0.12) !important; color: var(--danger) !important; opacity: 1 !important; }
+  .sel-cwl_in_clan { border-color: #48BFE3 !important;       background: rgba(72,191,227,0.12) !important; color: #48BFE3 !important;       opacity: 1 !important; }
+  .sel-farming     { border-color: var(--green) !important;  background: rgba(63,185,80,0.12)  !important; color: var(--green) !important;   opacity: 1 !important; }
+  .sel-cwl         { border-color: var(--accent) !important; background: var(--accent-dim)     !important; color: var(--accent) !important;   opacity: 1 !important; }
+  .sel-lazy        { border-color: var(--accent) !important; background: var(--accent-dim)     !important; color: var(--accent) !important;   opacity: 1 !important; }
+  .sel-war         { border-color: var(--accent) !important; background: var(--accent-dim)     !important; color: var(--accent) !important;   opacity: 1 !important; }
+  .sel-cwl_fwa     { border-color: var(--accent) !important; background: var(--accent-dim)     !important; color: var(--accent) !important;   opacity: 1 !important; }
 
   .save-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 14px; padding-bottom: max(12px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--bg) 35%); }
   .save-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--accent); color: #000; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; -webkit-tap-highlight-color: transparent; }
-  .save-btn:disabled { background: var(--surface2); color: var(--muted); }
+  .save-btn:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; }
 
   .state { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; gap: 10px; text-align: center; padding: 24px; }
-  .state-icon { font-size: 36px; }
+  .state-icon  { font-size: 36px; }
   .state-title { font-size: 16px; font-weight: 600; }
-  .state-desc { font-size: 13px; color: var(--muted); max-width: 260px; line-height: 1.5; }
+  .state-desc  { font-size: 13px; color: var(--muted); max-width: 260px; line-height: 1.5; }
   .spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-60px); background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 500; white-space: nowrap; transition: transform 0.25s; z-index: 999; pointer-events: none; }
   .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.ok  { color: var(--green);  border-color: rgba(63,185,80,0.4); }
-  .toast.err { color: var(--danger); border-color: rgba(248,81,73,0.4); }
+  .toast.ok   { color: var(--green);  border-color: rgba(63,185,80,0.4); }
+  .toast.err  { color: var(--danger); border-color: rgba(248,81,73,0.4); }
 </style>
 </head>
 <body>
@@ -95,21 +124,18 @@ if (tg) { tg.ready(); tg.expand(); }
 var username = tg && tg.initDataUnsafe && tg.initDataUnsafe.user
   ? tg.initDataUnsafe.user.username : null;
 
-// choices: { tag -> optionKey }
-var choices = {};
+var choices  = {};
+var isClosed = false; // set from API response
 
-// Options shown per clan — can be overridden per clan from the API response
 var DEFAULT_OPTIONS = [
   { key: 'no',          label: 'No' },
-  { key: 'cwl_in_clan', label: 'Cwl In Clan' },
-  { key: 'farming',     label: 'Farming' },
-  { key: 'lazy',        label: 'Lazy CWL' },
-  { key: 'war',         label: 'War CWL' },
-  { key: 'cwl_fwa',     label: 'CWL + FWA' },
+  { key: 'cwl_in_clan', label: 'CWL In Clan' },
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 
 function toast(msg, type) {
   var t = document.getElementById('toast');
@@ -120,34 +146,47 @@ function toast(msg, type) {
 
 function setRoot(html) { document.getElementById('root').innerHTML = html; }
 
-// ── Pill selection ─────────────────────────────────────────────────────────
+// ── Pill selection (only active when not closed) ───────────────────────────
 function pick(tag, key, el) {
+  if (isClosed) return;
   choices[tag] = key;
-  // clear siblings
   var row = el.parentElement;
-  row.querySelectorAll('.pill').forEach(function(p) {
-    p.className = 'pill';
-  });
+  row.querySelectorAll('.pill').forEach(function(p) { p.className = 'pill'; });
   el.className = 'pill sel-' + key;
   if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
 }
 
 // ── Render ─────────────────────────────────────────────────────────────────
-function render(clans) {
+function render(res) {
+  isClosed = res.isClosed;
+  var clans    = res.clans;
+  var deadline = res.deadline;
+
   var headerHtml =
     '<div class="header">' +
     '<h1>⚔️ CWL Registration</h1>' +
     '<span class="user-badge">@' + esc(username) + '</span>' +
     '</div>';
 
+  // Closed banner (sticky, below header)
+  var bannerHtml = isClosed
+    ? '<div class="closed-banner">🔒 <span><strong>Registration closed</strong> — deadline was ' + esc(deadline) + '</span></div>'
+    : '';
+
   if (!clans || clans.length === 0) {
-    setRoot(headerHtml + '<div class="state"><div class="state-icon">👤</div>' +
+    setRoot(headerHtml + bannerHtml +
+      '<div class="state"><div class="state-icon">👤</div>' +
       '<div class="state-title">No accounts found</div>' +
       '<div class="state-desc">Ask an admin to register you with /register.</div></div>');
     return;
   }
 
-  var body = '<div class="section"><div class="section-label">Your Accounts</div>';
+  // Deadline notice when still open
+  var noticeHtml = !isClosed
+    ? '<div class="deadline-notice">⏰ Registration closes on ' + esc(deadline) + '</div>'
+    : '';
+
+  var body = noticeHtml + '<div class="section"><div class="section-label">Your Accounts</div>';
 
   clans.forEach(function(clan) {
     body += '<div class="clan-block">' +
@@ -159,8 +198,15 @@ function render(clans) {
       choices[p.tag] = saved;
 
       var pills = options.map(function(opt) {
-        var sel = saved === opt.key ? ' sel-' + opt.key : '';
-        return '<button class="pill' + sel + '" onclick="pick(\'' + p.tag + '\',\'' + opt.key + '\',this)">' + esc(opt.label) + '</button>';
+        var selClass = saved === opt.key ? ' sel-' + opt.key : '';
+        if (isClosed) {
+          // Read-only: show all pills dimmed, selected one highlighted
+          return '<span class="pill-ro' + selClass + '">' + esc(opt.label) + '</span>';
+        } else {
+          return '<button class="pill' + selClass + '" onclick="pick(\'' +
+            p.tag.replace(/'/g, "\\'") + '\',\'' + opt.key + '\',this)">' +
+            esc(opt.label) + '</button>';
+        }
       }).join('');
 
       body +=
@@ -178,13 +224,19 @@ function render(clans) {
   });
 
   body += '</div>';
-  body += '<div class="save-bar"><button class="save-btn" id="saveBtn" onclick="save()">Save choices</button></div>';
 
-  setRoot(headerHtml + body);
+  // Save button: hidden when closed
+  var saveBar = isClosed
+    ? ''
+    : '<div class="save-bar"><button class="save-btn" id="saveBtn" onclick="save()">Save choices</button></div>';
+
+  setRoot(headerHtml + bannerHtml + body + saveBar);
 }
 
 // ── Save ───────────────────────────────────────────────────────────────────
 function save() {
+  if (isClosed) return;
+
   var btn = document.getElementById('saveBtn');
   btn.disabled = true; btn.textContent = 'Saving...';
 
@@ -200,11 +252,19 @@ function save() {
         toast('Saved!', 'ok');
         if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
       } else {
+        // Server rejected (e.g. deadline passed between page load and save)
         toast(res.error || 'Save failed', 'err');
+        if (res.error && res.error.indexOf('closed') > -1) {
+          isClosed = true;
+          // Reload the page so it switches to read-only state cleanly
+          setTimeout(function() { location.reload(); }, 1500);
+        }
       }
     })
     .catch(function(e) { toast('Network error: ' + e.message, 'err'); })
-    .finally(function() { btn.disabled = false; btn.textContent = 'Save choices'; });
+    .finally(function() {
+      if (btn) { btn.disabled = false; btn.textContent = 'Save choices'; }
+    });
 }
 
 // ── Boot ───────────────────────────────────────────────────────────────────
@@ -217,11 +277,17 @@ if (!username) {
   fetch(GAS_URL + '?action=getAccounts&username=' + encodeURIComponent(username))
     .then(function(r) { return r.json(); })
     .then(function(res) {
-      if (!res.ok) { setRoot('<div class="state"><div class="state-icon">⚠️</div><div class="state-title">' + esc(res.error) + '</div></div>'); return; }
-      render(res.clans);
+      if (!res.ok) {
+        setRoot('<div class="state"><div class="state-icon">⚠️</div>' +
+          '<div class="state-title">' + esc(res.error) + '</div></div>');
+        return;
+      }
+      render(res);
     })
     .catch(function(e) {
-      setRoot('<div class="state"><div class="state-icon">⚠️</div><div class="state-title">Network error</div><div class="state-desc">' + esc(e.message) + '</div></div>');
+      setRoot('<div class="state"><div class="state-icon">⚠️</div>' +
+        '<div class="state-title">Network error</div>' +
+        '<div class="state-desc">' + esc(e.message) + '</div></div>');
     });
 }
 </script>
