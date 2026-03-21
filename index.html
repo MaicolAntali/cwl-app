@@ -3,23 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CWL</title>
+<title>CWL Registration</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-  body { background:#111; color:#eee; font-family:sans-serif; padding:20px; }
-  pre  { background:#222; padding:12px; border-radius:8px; word-break:break-all; white-space:pre-wrap; font-size:13px; }
-  h3   { color:#f0a500; margin-top:20px; }
-  .account { background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:12px; margin-bottom:10px; }
-  .tag { font-family:monospace; color:#888; font-size:12px; }
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: rgba(255,255,255,0.08);
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #f0a500;
+    --accent-dim: rgba(240,165,0,0.12);
+    --danger: #f85149;
+    --green: #3fb950;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding-bottom: 90px; }
+
+  .header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 16px;
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .header h1 { font-size: 17px; font-weight: 700; color: var(--accent); flex: 1; }
+  .user-badge {
+    font-size: 12px; color: var(--accent); background: var(--accent-dim);
+    border: 1px solid rgba(240,165,0,0.3); border-radius: 20px; padding: 3px 10px;
+  }
+
+  .section { padding: 14px 14px 0; }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+
+  .clan-block { margin-bottom: 12px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .clan-header { background: var(--surface2); padding: 10px 14px; font-size: 13px; font-weight: 600; border-bottom: 1px solid var(--border); }
+
+  .account-row { background: var(--surface); padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  .account-row:last-child { border-bottom: none; }
+  .account-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .th { width: 38px; height: 38px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+  .th span:first-child { font-size: 9px; color: var(--muted); line-height: 1; }
+  .th span:last-child { font-size: 16px; font-weight: 700; color: var(--accent); line-height: 1; }
+  .account-name { font-size: 14px; font-weight: 600; }
+  .account-tag { font-size: 11px; color: var(--muted); font-family: monospace; margin-top: 2px; }
+
+  .pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill {
+    padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    border: 1.5px solid var(--border); background: transparent; color: var(--muted);
+    cursor: pointer; transition: all 0.12s; -webkit-tap-highlight-color: transparent;
+  }
+  .pill:active { transform: scale(0.94); }
+  .pill.sel-no      { border-color: var(--danger); background: rgba(248,81,73,0.12); color: var(--danger); }
+  .pill.sel-farming { border-color: var(--green);  background: rgba(63,185,80,0.12); color: var(--green); }
+  .pill.sel-cwl     { border-color: var(--accent); background: var(--accent-dim);    color: var(--accent); }
+  .pill.sel-lazy    { border-color: var(--accent); background: var(--accent-dim);    color: var(--accent); }
+  .pill.sel-war     { border-color: var(--accent); background: var(--accent-dim);    color: var(--accent); }
+  .pill.sel-cwl_fwa { border-color: var(--accent); background: var(--accent-dim);    color: var(--accent); }
+
+  .save-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 14px; padding-bottom: max(12px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--bg) 35%); }
+  .save-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--accent); color: #000; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; -webkit-tap-highlight-color: transparent; }
+  .save-btn:disabled { background: var(--surface2); color: var(--muted); }
+
+  .state { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; gap: 10px; text-align: center; padding: 24px; }
+  .state-icon { font-size: 36px; }
+  .state-title { font-size: 16px; font-weight: 600; }
+  .state-desc { font-size: 13px; color: var(--muted); max-width: 260px; line-height: 1.5; }
+  .spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-60px); background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 500; white-space: nowrap; transition: transform 0.25s; z-index: 999; pointer-events: none; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.ok  { color: var(--green);  border-color: rgba(63,185,80,0.4); }
+  .toast.err { color: var(--danger); border-color: rgba(248,81,73,0.4); }
 </style>
 </head>
 <body>
 
-<h3>User</h3>
-<pre id="user">loading...</pre>
-
-<h3>Accounts</h3>
-<div id="accounts">loading...</div>
+<div id="root"></div>
+<div class="toast" id="toast"></div>
 
 <script>
 var GAS_URL = 'https://script.google.com/macros/s/AKfycbyrBz1SWGxoBl2YrNPoHqPtz9PpWsgfKMtY1mMnULHclXmobnoJlS_WixC08Gv47tZM/exec';
@@ -28,33 +92,133 @@ var tg = window.Telegram && window.Telegram.WebApp;
 if (tg) { tg.ready(); tg.expand(); }
 
 var username = tg && tg.initDataUnsafe && tg.initDataUnsafe.user
-  ? tg.initDataUnsafe.user.username
-  : null;
+  ? tg.initDataUnsafe.user.username : null;
 
-document.getElementById('user').textContent = username
-  ? '@' + username
-  : '(no user — not opened from Telegram?)';
+// choices: { tag -> optionKey }
+var choices = {};
 
-if (username) {
+// Options shown per clan — can be overridden per clan from the API response
+var DEFAULT_OPTIONS = [
+  { key: 'no',      label: 'No' },
+  { key: 'farming', label: 'Farming' },
+  { key: 'lazy',    label: 'Lazy CWL' },
+  { key: 'war',     label: 'War CWL' },
+  { key: 'cwl_fwa', label: 'CWL + FWA' },
+];
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function toast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + (type||'ok');
+  setTimeout(function(){ t.classList.add('show'); }, 10);
+  setTimeout(function(){ t.classList.remove('show'); }, 2600);
+}
+
+function setRoot(html) { document.getElementById('root').innerHTML = html; }
+
+// ── Pill selection ─────────────────────────────────────────────────────────
+function pick(tag, key, el) {
+  choices[tag] = key;
+  // clear siblings
+  var row = el.parentElement;
+  row.querySelectorAll('.pill').forEach(function(p) {
+    p.className = 'pill';
+  });
+  el.className = 'pill sel-' + key;
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function render(clans) {
+  var headerHtml =
+    '<div class="header">' +
+    '<h1>⚔️ CWL Registration</h1>' +
+    '<span class="user-badge">@' + esc(username) + '</span>' +
+    '</div>';
+
+  if (!clans || clans.length === 0) {
+    setRoot(headerHtml + '<div class="state"><div class="state-icon">👤</div>' +
+      '<div class="state-title">No accounts found</div>' +
+      '<div class="state-desc">Ask an admin to register you with /register.</div></div>');
+    return;
+  }
+
+  var body = '<div class="section"><div class="section-label">Your Accounts</div>';
+
+  clans.forEach(function(clan) {
+    body += '<div class="clan-block">' +
+      '<div class="clan-header">' + esc(clan.emoji||'🛡️') + ' ' + esc(clan.clanName) + '</div>';
+
+    clan.accounts.forEach(function(p) {
+      var options = clan.options || DEFAULT_OPTIONS;
+      var saved   = p.savedChoice || 'no';
+      choices[p.tag] = saved;
+
+      var pills = options.map(function(opt) {
+        var sel = saved === opt.key ? ' sel-' + opt.key : '';
+        return '<button class="pill' + sel + '" onclick="pick(\'' + p.tag + '\',\'' + opt.key + '\',this)">' + esc(opt.label) + '</button>';
+      }).join('');
+
+      body +=
+        '<div class="account-row">' +
+        '<div class="account-top">' +
+        '<div class="th"><span>TH</span><span>' + esc(p.thLevel) + '</span></div>' +
+        '<div><div class="account-name">' + esc(p.playerName) + '</div>' +
+        '<div class="account-tag">' + esc(p.tag) + '</div></div>' +
+        '</div>' +
+        '<div class="pills">' + pills + '</div>' +
+        '</div>';
+    });
+
+    body += '</div>';
+  });
+
+  body += '</div>';
+  body += '<div class="save-bar"><button class="save-btn" id="saveBtn" onclick="save()">Save choices</button></div>';
+
+  setRoot(headerHtml + body);
+}
+
+// ── Save ───────────────────────────────────────────────────────────────────
+function save() {
+  var btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+
+  fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'saveChoices', username: username, choices: choices })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    if (res.ok) {
+      toast('Saved!', 'ok');
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    } else {
+      toast(res.error || 'Save failed', 'err');
+    }
+  })
+  .catch(function() { toast('Network error', 'err'); })
+  .finally(function() { btn.disabled = false; btn.textContent = 'Save choices'; });
+}
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+setRoot('<div class="state"><div class="spinner"></div></div>');
+
+if (!username) {
+  setRoot('<div class="state"><div class="state-icon">⚠️</div>' +
+    '<div class="state-title">Not opened from Telegram</div></div>');
+} else {
   fetch(GAS_URL + '?action=getAccounts&username=' + encodeURIComponent(username))
     .then(function(r) { return r.json(); })
     .then(function(res) {
-      if (!res.ok) {
-        document.getElementById('accounts').textContent = 'Error: ' + res.error;
-        return;
-      }
-      var html = '';
-      res.accounts.forEach(function(p) {
-        html += '<div class="account">' +
-          '<b>' + p.playerName + '</b> &nbsp; TH' + p.thLevel +
-          '<br><span class="tag">' + p.tag + '</span>' +
-          '<br><small>' + (p.clanName || 'No clan') + '</small>' +
-          '</div>';
-      });
-      document.getElementById('accounts').innerHTML = html || '<p>No accounts found.</p>';
+      if (!res.ok) { setRoot('<div class="state"><div class="state-icon">⚠️</div><div class="state-title">' + esc(res.error) + '</div></div>'); return; }
+      render(res.clans);
     })
     .catch(function(e) {
-      document.getElementById('accounts').textContent = 'Network error: ' + e.message;
+      setRoot('<div class="state"><div class="state-icon">⚠️</div><div class="state-title">Network error</div><div class="state-desc">' + esc(e.message) + '</div></div>');
     });
 }
 </script>
