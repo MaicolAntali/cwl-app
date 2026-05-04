@@ -20,11 +20,7 @@
       --green: #3fb950;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
@@ -45,339 +41,128 @@
       gap: 10px;
     }
 
-    .header h1 {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--accent);
-      flex: 1;
-    }
+    .header h1 { font-size: 17px; font-weight: 700; color: var(--accent); flex: 1; }
 
     .user-badge {
-      font-size: 12px;
-      color: var(--accent);
+      font-size: 12px; color: var(--accent);
       background: var(--accent-dim);
       border: 1px solid rgba(240, 165, 0, 0.3);
-      border-radius: 20px;
-      padding: 3px 10px;
+      border-radius: 20px; padding: 3px 10px;
     }
 
-    /* ── Closed banner ── */
     .closed-banner {
-      background: rgba(248, 81, 73, 0.1);
-      border-bottom: 1px solid rgba(248, 81, 73, 0.25);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--danger);
-      position: sticky;
-      top: 57px;
-      z-index: 9;
+      background: rgba(248, 81, 73, 0.1); border-bottom: 1px solid rgba(248, 81, 73, 0.25);
+      padding: 10px 16px; display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--danger); position: sticky; top: 57px; z-index: 9;
     }
+    .closed-banner strong { font-weight: 600; }
 
-    .closed-banner strong {
-      font-weight: 600;
-    }
-
-    /* ── Open deadline notice ── */
     .deadline-notice {
-      margin: 14px 14px 0;
-      background: rgba(240, 165, 0, 0.08);
-      border: 1px solid rgba(240, 165, 0, 0.2);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 12px;
-      color: var(--accent);
+      margin: 14px 14px 0; background: rgba(240, 165, 0, 0.08);
+      border: 1px solid rgba(240, 165, 0, 0.2); border-radius: 8px;
+      padding: 8px 12px; font-size: 12px; color: var(--accent);
     }
 
-    .section {
-      padding: 14px 14px 0;
-    }
-
+    .section { padding: 14px 14px 0; }
     .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
     }
 
     .clan-block {
-      margin-bottom: 12px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
+      margin-bottom: 12px; border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
     }
-
     .clan-header {
-      background: var(--surface2);
-      padding: 10px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      border-bottom: 1px solid var(--border);
+      background: var(--surface2); padding: 10px 14px;
+      font-size: 13px; font-weight: 600; border-bottom: 1px solid var(--border);
     }
 
-    .account-row {
-      background: var(--surface);
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-    }
+    .account-row { background: var(--surface); padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .account-row:last-child { border-bottom: none; }
 
-    .account-row:last-child {
-      border-bottom: none;
-    }
-
-    .account-top {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
+    .account-top { display: flex; align-items: center; gap: 10px; }
 
     .th {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 38px; height: 38px; border-radius: 8px;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; flex-shrink: 0;
     }
+    .th span:first-child { font-size: 9px; color: var(--muted); line-height: 1; }
+    .th span:last-child { font-size: 16px; font-weight: 700; color: var(--accent); line-height: 1; }
 
-    .th span:first-child {
-      font-size: 9px;
-      color: var(--muted);
-      line-height: 1;
-    }
+    .account-name { font-size: 14px; font-weight: 600; }
+    .account-tag { font-size: 11px; color: var(--muted); font-family: monospace; margin-top: 2px; }
 
-    .th span:last-child {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1;
+    /* External clan select dropdown */
+    .ext-clan-select {
+      background: var(--surface2) url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b949e' viewBox='0 0 16 16'%3E%3Cpath d='M8 11.5l-5-5h10z'/%3E%3C/svg%3E") no-repeat right 10px center;
+      color: var(--text); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 30px 8px 12px;
+      font-size: 13px; width: 100%; outline: none;
+      -webkit-appearance: none; appearance: none; margin-top: 10px; margin-bottom: 10px;
     }
+    .ext-clan-select:disabled { opacity: 0.5; }
 
-    .account-name {
-      font-size: 14px;
-      font-weight: 600;
+    .pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    
+    .pill, .pill-ro {
+      padding: 5px 12px; border-radius: 20px; font-size: 12px;
+      font-weight: 500; border: 1.5px solid var(--border);
+      background: transparent; color: var(--muted);
     }
+    .pill { cursor: pointer; transition: all 0.12s; -webkit-tap-highlight-color: transparent; }
+    .pill:active { transform: scale(0.94); }
+    .pill-ro { cursor: default; opacity: 0.55; }
 
-    .account-tag {
-      font-size: 11px;
-      color: var(--muted);
-      font-family: monospace;
-      margin-top: 2px;
-    }
-
-    .pills {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    /* interactive */
-    .pill {
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      border: 1.5px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.12s;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .pill:active {
-      transform: scale(0.94);
-    }
-
-    /* read-only */
-    .pill-ro {
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      border: 1.5px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      cursor: default;
-      opacity: 0.55;
-    }
-
-    /* selected states — shared by both pill and pill-ro via these classes */
-    .sel-no {
-      border-color: var(--danger) !important;
-      background: rgba(248, 81, 73, 0.12) !important;
-      color: var(--danger) !important;
-      opacity: 1 !important;
-    }
-
-    .sel-cwl_in_clan {
-      border-color: #48BFE3 !important;
-      background: rgba(72, 191, 227, 0.12) !important;
-      color: #48BFE3 !important;
-      opacity: 1 !important;
-    }
-
-    .sel-farming {
-      border-color: var(--green) !important;
-      background: rgba(63, 185, 80, 0.12) !important;
-      color: var(--green) !important;
-      opacity: 1 !important;
-    }
-
-    .sel-cwl {
-      border-color: var(--accent) !important;
-      background: var(--accent-dim) !important;
-      color: var(--accent) !important;
-      opacity: 1 !important;
-    }
-
-    .sel-lazy {
-      border-color: var(--accent) !important;
-      background: var(--accent-dim) !important;
-      color: var(--accent) !important;
-      opacity: 1 !important;
-    }
-
-    .sel-cwl_comp {
-      border-color: #2E5BFF !important;
-      background: rgba(46, 91, 255, 0.12) !important;
-      color: #2E5BFF !important;
-      opacity: 1 !important;
-    }
-
-    .sel-cwl_fwa {
-      border-color: #9D4EDD !important;
-      background: rgba(157, 78, 221, 0.12) !important;
-      color: #9D4EDD !important;
-      opacity: 1 !important;
-    }
+    .sel-no { border-color: var(--danger) !important; background: rgba(248, 81, 73, 0.12) !important; color: var(--danger) !important; opacity: 1 !important; }
+    .sel-cwl_in_clan { border-color: #48BFE3 !important; background: rgba(72, 191, 227, 0.12) !important; color: #48BFE3 !important; opacity: 1 !important; }
+    .sel-farming { border-color: var(--green) !important; background: rgba(63, 185, 80, 0.12) !important; color: var(--green) !important; opacity: 1 !important; }
+    .sel-cwl { border-color: var(--accent) !important; background: var(--accent-dim) !important; color: var(--accent) !important; opacity: 1 !important; }
+    .sel-lazy { border-color: var(--accent) !important; background: var(--accent-dim) !important; color: var(--accent) !important; opacity: 1 !important; }
+    .sel-cwl_comp { border-color: #2E5BFF !important; background: rgba(46, 91, 255, 0.12) !important; color: #2E5BFF !important; opacity: 1 !important; }
+    .sel-cwl_fwa { border-color: #9D4EDD !important; background: rgba(157, 78, 221, 0.12) !important; color: #9D4EDD !important; opacity: 1 !important; }
 
     .save-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 12px 14px;
+      position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 14px;
       padding-bottom: max(12px, env(safe-area-inset-bottom));
       background: linear-gradient(transparent, var(--bg) 35%);
     }
-
     .save-btn {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      background: var(--accent);
-      color: #000;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity 0.15s;
-      -webkit-tap-highlight-color: transparent;
+      width: 100%; padding: 14px; border-radius: 12px; border: none;
+      background: var(--accent); color: #000; font-size: 15px;
+      font-weight: 700; cursor: pointer; transition: opacity 0.15s;
     }
-
-    .save-btn:disabled {
-      background: var(--surface2);
-      color: var(--muted);
-      cursor: not-allowed;
-    }
+    .save-btn:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; }
 
     .state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 50vh;
-      gap: 10px;
-      text-align: center;
-      padding: 24px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 50vh; gap: 10px; text-align: center; padding: 24px;
     }
-
-    .state-icon {
-      font-size: 36px;
-    }
-
-    .state-title {
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .state-desc {
-      font-size: 13px;
-      color: var(--muted);
-      max-width: 260px;
-      line-height: 1.5;
-    }
+    .state-icon { font-size: 36px; }
+    .state-title { font-size: 16px; font-weight: 600; }
+    .state-desc { font-size: 13px; color: var(--muted); max-width: 260px; line-height: 1.5; }
 
     .spinner {
-      width: 28px;
-      height: 28px;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      width: 28px; height: 28px; border: 3px solid var(--border);
+      border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite;
     }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .toast {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-60px);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-size: 13px;
-      font-weight: 500;
-      white-space: nowrap;
-      transition: transform 0.25s;
-      z-index: 999;
-      pointer-events: none;
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-60px);
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 16px; font-size: 13px;
+      font-weight: 500; white-space: nowrap; transition: transform 0.25s; z-index: 999;
     }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .toast.ok {
-      color: var(--green);
-      border-color: rgba(63, 185, 80, 0.4);
-    }
-
-    .toast.err {
-      color: var(--danger);
-      border-color: rgba(248, 81, 73, 0.4);
-    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.ok { color: var(--green); border-color: rgba(63, 185, 80, 0.4); }
+    .toast.err { color: var(--danger); border-color: rgba(248, 81, 73, 0.4); }
 
     .lang-btn {
-      background: none;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-      padding: 0 2px;
-      line-height: 1;
-      opacity: 0.8;
-      flex-shrink: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .lang-btn:active {
-      opacity: 0.5;
+      background: none; border: none; font-size: 18px; cursor: pointer;
+      padding: 0 2px; opacity: 0.8; -webkit-tap-highlight-color: transparent;
     }
   </style>
 </head>
@@ -393,49 +178,30 @@
     var tg = window.Telegram && window.Telegram.WebApp;
     if (tg) { tg.ready(); tg.expand(); }
 
-    // username is only used for display — the API authenticates via initData
-    var username = tg && tg.initDataUnsafe && tg.initDataUnsafe.user
-      ? tg.initDataUnsafe.user.username : null;
+    var username = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.username : null;
     var initData = tg ? (tg.initData || '') : '';
 
     var choices = {};
-    var isClosed = false; // set from API response
+    var isClosed = false;
 
-    // ── i18n ──────────────────────────────────────────────────────────────────
-    // Default: Italian. Falls back to English for any non-IT language code.
-    var lang = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user &&
-      tg.initDataUnsafe.user.language_code === 'en') ? 'en' : 'it';
+    var lang = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.language_code === 'en') ? 'en' : 'it';
 
     var STRINGS = {
       it: {
-        title: '⚔️ Registrazione CWL',
-        your_accounts: 'I tuoi account',
-        no_accounts: 'Nessun account trovato',
-        no_accounts_desc: 'Chiedi a un admin di registrarti con /register.',
-        save_btn: 'Salva le scelte',
-        saving: 'Salvataggio...',
-        saved: 'Salvato!',
-        save_failed: 'Salvataggio fallito',
-        network_error: 'Errore di rete',
-        not_telegram: 'Apri questa app da Telegram',
-        closed_banner: 'Registrazioni chiuse — scadenza:',
-        deadline_notice: '⏰ Le registrazioni chiudono il',
-        loading: 'Caricamento...',
+        title: '⚔️ Registrazione CWL', your_accounts: 'I tuoi account',
+        no_accounts: 'Nessun account trovato', no_accounts_desc: 'Chiedi a un admin di registrarti con /register.',
+        save_btn: 'Salva le scelte', saving: 'Salvataggio...', saved: 'Salvato!', save_failed: 'Salvataggio fallito',
+        network_error: 'Errore di rete', not_telegram: 'Apri questa app da Telegram',
+        closed_banner: 'Registrazioni chiuse — scadenza:', deadline_notice: '⏰ Le registrazioni chiudono il',
+        loading: 'Caricamento...', external_title: '🌍 Giocatori Senza Clan', no_ext_clans: 'Nessun clan disponibile al momento.'
       },
       en: {
-        title: '⚔️ CWL Registration',
-        your_accounts: 'Your Accounts',
-        no_accounts: 'No accounts found',
-        no_accounts_desc: 'Ask an admin to register you with /register.',
-        save_btn: 'Save choices',
-        saving: 'Saving...',
-        saved: 'Saved!',
-        save_failed: 'Save failed',
-        network_error: 'Network error',
-        not_telegram: 'Open this app from Telegram',
-        closed_banner: 'Registration closed — deadline was',
-        deadline_notice: '⏰ Registration closes on',
-        loading: 'Loading...',
+        title: '⚔️ CWL Registration', your_accounts: 'Your Accounts',
+        no_accounts: 'No accounts found', no_accounts_desc: 'Ask an admin to register you with /register.',
+        save_btn: 'Save choices', saving: 'Saving...', saved: 'Saved!', save_failed: 'Save failed',
+        network_error: 'Network error', not_telegram: 'Open this app from Telegram',
+        closed_banner: 'Registration closed — deadline was', deadline_notice: '⏰ Registration closes on',
+        loading: 'Loading...', external_title: '🌍 Clanless Players', no_ext_clans: 'No clans currently available.'
       }
     };
 
@@ -443,19 +209,13 @@
 
     function toggleLang() {
       lang = lang === 'it' ? 'en' : 'it';
-      // Re-render with current data — lastRes is stored on load
       if (window._lastRes) render(window._lastRes);
       if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
-    var DEFAULT_OPTIONS = [
-      { key: 'no', label: 'No' },
-    ];
+    var DEFAULT_OPTIONS = [{ key: 'no', label: 'No' }];
 
-    // ── Helpers ────────────────────────────────────────────────────────────────
-    function esc(s) {
-      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
+    function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
     function toast(msg, type) {
       var t = document.getElementById('toast');
@@ -466,71 +226,92 @@
 
     function setRoot(html) { document.getElementById('root').innerHTML = html; }
 
-    // ── Pill selection (only active when not closed) ───────────────────────────
+    // Renders the individual pills
+    function buildPills(tag, options, savedValue, readOnly) {
+      return options.map(function (opt) {
+        var selClass = savedValue === opt.key ? ' sel-' + opt.key : '';
+        if (readOnly) {
+          return '<span class="pill-ro' + selClass + '">' + esc(opt.label) + '</span>';
+        } else {
+          return '<button class="pill' + selClass + '" onclick="pick(\'' + tag.replace(/'/g, "\\'") + '\',\'' + opt.key + '\',this)">' + esc(opt.label) + '</button>';
+        }
+      }).join('');
+    }
+
     function pick(tag, key, el) {
       if (isClosed) return;
-      choices[tag] = key;
+      choices[tag].choice = key;
       var row = el.parentElement;
       row.querySelectorAll('.pill').forEach(function (p) { p.className = 'pill'; });
       el.className = 'pill sel-' + key;
       if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
-    // ── Render ─────────────────────────────────────────────────────────────────
+    // Handles changing the target clan for clanless players
+    function changeExtClan(tag, newClanTag) {
+      if (isClosed) return;
+      choices[tag].targetClan = newClanTag;
+      choices[tag].choice = 'no'; // reset choice to avoid carrying over invalid options
+      
+      var clanCfg = window._lastRes.availableExtClans.find(function(c) { return c.clanTag === newClanTag; });
+      var opts = clanCfg ? clanCfg.options : DEFAULT_OPTIONS;
+      
+      var container = document.getElementById('pills-' + tag.replace(/#/g, ''));
+      if(container) container.innerHTML = buildPills(tag, opts, 'no', isClosed);
+      
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
     function render(res) {
       isClosed = res.isClosed;
       var clans = res.clans;
+      var extClans = res.availableExtClans || [];
       var deadline = res.deadline;
 
-      var flagEmoji = lang === 'it' ? '🇮🇹' : '🇬🇧';
-
-      var headerHtml =
-        '<div class="header">' +
-        '<h1>' + T('title') + '</h1>' +
-        '<span class="user-badge">@' + esc(username) + '</span>' +
-        '<button class="lang-btn" onclick="toggleLang()" title="Switch language">' + flagEmoji + '</button>' +
-        '</div>';
-
-      // Closed banner (sticky, below header)
-      var bannerHtml = isClosed
-        ? '<div class="closed-banner">🔒 <span><strong>' + T('closed_banner') + '</strong> ' + esc(deadline) + '</span></div>'
-        : '';
+      var headerHtml = '<div class="header"><h1>' + T('title') + '</h1><span class="user-badge">@' + esc(username) + '</span><button class="lang-btn" onclick="toggleLang()">' + (lang === 'it' ? '🇮🇹' : '🇬🇧') + '</button></div>';
+      var bannerHtml = isClosed ? '<div class="closed-banner">🔒 <span><strong>' + T('closed_banner') + '</strong> ' + esc(deadline) + '</span></div>' : '';
 
       if (!clans || clans.length === 0) {
-        setRoot(headerHtml + bannerHtml +
-          '<div class="state"><div class="state-icon">👤</div>' +
-          '<div class="state-title">' + T('no_accounts') + '</div>' +
-          '<div class="state-desc">' + T('no_accounts_desc') + '</div></div>');
+        setRoot(headerHtml + bannerHtml + '<div class="state"><div class="state-icon">👤</div><div class="state-title">' + T('no_accounts') + '</div><div class="state-desc">' + T('no_accounts_desc') + '</div></div>');
         return;
       }
 
-      // Deadline notice when still open
-      var noticeHtml = !isClosed
-        ? '<div class="deadline-notice">' + T('deadline_notice') + ' ' + esc(deadline) + '</div>'
-        : '';
-
+      var noticeHtml = !isClosed ? '<div class="deadline-notice">' + T('deadline_notice') + ' ' + esc(deadline) + '</div>' : '';
       var body = noticeHtml + '<div class="section"><div class="section-label">' + T('your_accounts') + '</div>';
 
       clans.forEach(function (clan) {
-        body += '<div class="clan-block">' +
-          '<div class="clan-header">' + esc(clan.emoji || '🛡️') + ' ' + esc(clan.clanName) + '</div>';
+        var isUnknown = clan.clanTag === 'UNKNOWN';
+        var title = isUnknown ? T('external_title') : esc(clan.emoji || '🛡️') + ' ' + esc(clan.clanName);
+        
+        body += '<div class="clan-block"><div class="clan-header">' + title + '</div>';
 
         clan.accounts.forEach(function (p) {
+          var selClan = p.savedTargetClan || (extClans.length > 0 ? extClans[0].clanTag : '');
           var options = clan.options || DEFAULT_OPTIONS;
           var saved = p.savedChoice || 'no';
-          choices[p.tag] = saved;
 
-          var pills = options.map(function (opt) {
-            var selClass = saved === opt.key ? ' sel-' + opt.key : '';
-            if (isClosed) {
-              // Read-only: show all pills dimmed, selected one highlighted
-              return '<span class="pill-ro' + selClass + '">' + esc(opt.label) + '</span>';
-            } else {
-              return '<button class="pill' + selClass + '" onclick="pick(\'' +
-                p.tag.replace(/'/g, "\\'") + '\',\'' + opt.key + '\',this)">' +
-                esc(opt.label) + '</button>';
-            }
-          }).join('');
+          // Override options if player is external and we have external clans
+          if (isUnknown && extClans.length > 0) {
+            var currentExtClan = extClans.find(function(c) { return c.clanTag === selClan; }) || extClans[0];
+            options = currentExtClan.options;
+            selClan = currentExtClan.clanTag;
+          }
+
+          // Setup the choices object payload
+          choices[p.tag] = { choice: saved, targetClan: isUnknown ? selClan : clan.clanTag };
+
+          var pills = buildPills(p.tag, options, saved, isClosed);
+          var extSelector = '';
+
+          // Dropdown injection for external players
+          if (isUnknown && extClans.length > 0) {
+             var optsHtml = extClans.map(function(ec) {
+               return '<option value="' + ec.clanTag + '" ' + (ec.clanTag === selClan ? 'selected' : '') + '>' + esc(ec.emoji + ' ' + ec.clanName) + '</option>';
+             }).join('');
+             extSelector = '<select class="ext-clan-select" onchange="changeExtClan(\'' + p.tag + '\', this.value)" ' + (isClosed ? 'disabled' : '') + '>' + optsHtml + '</select>';
+          } else if (isUnknown) {
+             extSelector = '<div style="margin: 8px 0; font-size:12px; color:var(--danger);">' + T('no_ext_clans') + '</div>';
+          }
 
           body +=
             '<div class="account-row">' +
@@ -539,7 +320,8 @@
             '<div><div class="account-name">' + esc(p.playerName) + '</div>' +
             '<div class="account-tag">' + esc(p.tag) + '</div></div>' +
             '</div>' +
-            '<div class="pills">' + pills + '</div>' +
+            extSelector +
+            '<div class="pills" id="pills-' + p.tag.replace(/#/g, '') + '">' + pills + '</div>' +
             '</div>';
         });
 
@@ -548,25 +330,17 @@
 
       body += '</div>';
 
-      // Save button: hidden when closed
-      var saveBar = isClosed
-        ? ''
-        : '<div class="save-bar"><button class="save-btn" id="saveBtn" onclick="save()">' + T('save_btn') + '</button></div>';
-
+      var saveBar = isClosed ? '' : '<div class="save-bar"><button class="save-btn" id="saveBtn" onclick="save()">' + T('save_btn') + '</button></div>';
       setRoot(headerHtml + bannerHtml + body + saveBar);
     }
 
-    // ── Save ───────────────────────────────────────────────────────────────────
     function save() {
       if (isClosed) return;
 
       var btn = document.getElementById('saveBtn');
       btn.disabled = true; btn.textContent = T('saving');
 
-      var url = GAS_URL +
-        '?action=saveChoices' +
-        '&initData=' + encodeURIComponent(initData) +
-        '&choices=' + encodeURIComponent(JSON.stringify(choices));
+      var url = GAS_URL + '?action=saveChoices&initData=' + encodeURIComponent(initData) + '&choices=' + encodeURIComponent(JSON.stringify(choices));
 
       fetch(url)
         .then(function (r) { return r.json(); })
@@ -575,43 +349,33 @@
             toast(T('saved'), 'ok');
             if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
           } else {
-            // Server rejected (e.g. deadline passed between page load and save)
             toast(res.error || T('save_failed'), 'err');
-            if (res.error && res.error.indexOf('closed') > -1) {
-              isClosed = true;
-              // Reload the page so it switches to read-only state cleanly
-              setTimeout(function () { location.reload(); }, 1500);
+            if (res.error && res.error.toLowerCase().indexOf('closed') > -1) {
+              isClosed = true; setTimeout(function () { location.reload(); }, 1500);
             }
           }
         })
         .catch(function (e) { toast(T('network_error') + ': ' + e.message, 'err'); })
-        .finally(function () {
-          if (btn) { btn.disabled = false; btn.textContent = T('save_btn'); }
-        });
+        .finally(function () { if (btn) { btn.disabled = false; btn.textContent = T('save_btn'); } });
     }
 
-    // ── Boot ───────────────────────────────────────────────────────────────────
     setRoot('<div class="state"><div class="spinner"></div><div class="state-desc" style="margin-top:12px">' + T('loading') + '</div></div>');
 
     if (!initData) {
-      setRoot('<div class="state"><div class="state-icon">⚠️</div>' +
-        '<div class="state-title">' + T('not_telegram') + '</div></div>');
+      setRoot('<div class="state"><div class="state-icon">⚠️</div><div class="state-title">' + T('not_telegram') + '</div></div>');
     } else {
       fetch(GAS_URL + '?action=getAccounts&initData=' + encodeURIComponent(initData))
         .then(function (r) { return r.json(); })
         .then(function (res) {
           if (!res.ok) {
-            setRoot('<div class="state"><div class="state-icon">⚠️</div>' +
-              '<div class="state-title">' + esc(res.error) + '</div></div>');
+            setRoot('<div class="state"><div class="state-icon">⚠️</div><div class="state-title">' + esc(res.error) + '</div></div>');
             return;
           }
           window._lastRes = res;
           render(res);
         })
         .catch(function (e) {
-          setRoot('<div class="state"><div class="state-icon">⚠️</div>' +
-            '<div class="state-title">' + T('network_error') + '</div>' +
-            '<div class="state-desc">' + esc(e.message) + '</div></div>');
+          setRoot('<div class="state"><div class="state-icon">⚠️</div><div class="state-title">' + T('network_error') + '</div><div class="state-desc">' + esc(e.message) + '</div></div>');
         });
     }
   </script>
